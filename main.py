@@ -1,6 +1,6 @@
-#Part 2: Data Analysis
-#openCV - computer vision
-#cv2 will not appear on download use openCV-python but commands are the same
+# Part 2: Data Analysis
+# openCV - computer vision
+# cv2 will not appear on download use openCV-python but commands are the same
 import os
 import os.path
 import cv2
@@ -8,9 +8,7 @@ import tkinter as tk
 from tkinter import filedialog
 root = tk.Tk()
 root.withdraw()
-#prompt for the use of numpy and image libraries
-#these extensions have to be downloaded: view > tool window > python packages
-import PIL
+# import PIL
 import numpy as np
 import image
 import imagesize
@@ -24,18 +22,11 @@ from scipy import stats
 files = []
 b = []
 meanK = []
-filter = int(input(("Remove Noise? 1- yes 0-no: ")))
+filter = int(input("Remove Noise? 1- yes 0-no: "))
+collected_meanK = []
 
-'''
-#open analysis folder
-analysis_folder = filedialog.askdirectory()
-print(analysis_folder)
-for folder in os.listdir(analysis_folder):
-    if os.analysis_folder.isdir(os.analysis_folder.join(path, folder)):
-        print(folder)
-'''
-
-# control_nolight file
+# control no light file
+print("Please select control file")
 control_file = filedialog.askopenfilenames()
 for i in range(len(control_file)):
     control_dataset = Image.open(control_file[i])
@@ -47,56 +38,64 @@ for i in range(len(control_file)):
     # 3d array: used for the subtraction
     expim1 = contarray.astype(np.double)
 
-
 # start of folder reading
+print("Please select folder for analysis")
 path= filedialog.askdirectory()
 print(path)
 print(isinstance(path, str))
 # assert folder is path
 # currently this is working for one folder
-for file in os.listdir(path):
-    if os.path.isfile(os.path.join(path, file)):
-       # yield file
-        # print(path)
-        # print(file)
-        address = path + '/'+file
-        print(address)
-        dataset = Image.open(address)
-        h, w = np.shape(dataset)
-        contarray = np.zeros((h, w, dataset.n_frames))
-        for i in range(dataset.n_frames):
-            dataset.seek(i)
-            contarray[:, :, i] = np.array(dataset)
-        expim = contarray.astype(np.double)
-        #print(expim)
-# maybe i will include the subtraction within this loop for convenience
-    if filter == 1:
-        print(expim)
-        filter_1 = np.subtract(expim, expim1)
-        # print(filter_1)
-        flat_filter = filter_1.flatten(order='C')
-        meanK_formula = np.std(flat_filter) / np.mean(flat_filter)
-        meanK.append(meanK_formula)
-        print("noise filtered")
-    else:
-        print("No noise filtering")
-        meanK_formula = np.std(b) / np.mean(b)
-        # print(meanK_formula)
-        meanK.append(meanK_formula)
+# 9/20 appending to read from a bigger file
+# 9/20 making an empty array to store results of each file
+for folder in os.scandir(path):
+    if folder.is_dir():
+        sub_folder = folder.path
+        print(sub_folder)
+        print(folder.name)
+        for file in os.listdir(sub_folder):
+            if os.path.isfile(os.path.join(sub_folder, file)):
+                address = sub_folder + '/' + file
+                print(address)
+                dataset = Image.open(address)
+                h, w = np.shape(dataset)
+                contarray = np.zeros((h, w, dataset.n_frames))
+                for i in range(dataset.n_frames):
+                    dataset.seek(i)
+                    contarray[:, :, i] = np.array(dataset)
+                expim = contarray.astype(np.double)
+                # print(expim)
+                # maybe i will include the subtraction within this loop for convenience
+            if filter == 1:
+                # print(expim)
+                filter_1 = np.subtract(expim, expim1)
+                # print(filter_1)
+                flat_filter = filter_1.flatten(order='C')
+                meanK_formula = np.std(flat_filter) / np.mean(flat_filter)
+                meanK.append(meanK_formula)
+                print("noise filtered")
+            else:
+                print("No noise filtering")
+                meanK_formula = np.std(b) / np.mean(b)
+                # print(meanK_formula)
+                meanK.append(meanK_formula)
+    print(meanK)
 print(meanK)
+# collected_meanK = np.r_[collected_meanK, [meanK]]
 
-# files = files + list(file.split(" "))
-# print(files)
 
+
+
+'''
 # graphing
+# 9/20/2022
 xaxis = [10, 15, 20, 25, 35]
 
 # for i in range(len(xaxis)):
-   # for i in range(len(meanK)):
+# for i in range(len(meanK)):
 plt.plot(xaxis, meanK, 'ro', label= 'Average MeanK')
 fitted_graph = np.polyfit(xaxis, meanK, 2)
 plt.plot(xaxis, np.polyval(fitted_graph, xaxis), color = 'blue', label = 'polyfit') # mark w x
-#r2 value
+# r2 value
 slope, intercept, r_value, p_value, std_err = stats.linregress(xaxis, meanK)
 r_squared = r_value**2
 print(r_squared)
@@ -104,7 +103,7 @@ print(r_squared)
 plt.legend()
 plt.text(13, 0.25, r_squared, horizontalalignment = 'right')
 plt.show()
-
+'''
 
 '''
 #start of code
