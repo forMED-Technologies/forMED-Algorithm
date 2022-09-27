@@ -17,13 +17,13 @@ import matplotlib
 from matplotlib import pyplot as plt
 import scipy
 from scipy import stats
+import datastructs
 
 # folders = []
 files = []
 b = []
 meanK = []
 filter = int(input("Remove Noise? 1- yes 0-no: "))
-collected_meanK = []
 
 # control no light file
 print("Please select control file")
@@ -79,12 +79,13 @@ for folder in os.scandir(path):
                 # print(meanK_formula)
                 meanK.append(meanK_formula)
     print(meanK)
-print(meanK)
-# collected_meanK = np.r_[collected_meanK, [meanK]]
+# necessary for reshaping
+meanK_array = np.array(meanK)
+# later edit to .reshape(len(folders), len(files))
+meanK_values = meanK_array.reshape(2, 5)
+print(meanK_values)
 
-
-
-
+# averaging for the final list
 '''
 # graphing
 # 9/20/2022
