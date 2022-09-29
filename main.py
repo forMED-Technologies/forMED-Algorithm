@@ -47,7 +47,7 @@ while len(pressures) != tests:
 # temporary print to ensure program is working
 print("Length of Pressures match number of Tests")
 '''
-print("")
+trials = int(input("How many trials?: "))
 filter = int(input("Remove Noise? 1- yes 0-no: "))
 # control no light file
 print("Please select control file")
@@ -106,7 +106,7 @@ for folder in os.scandir(path):
 # necessary for reshaping
 meanK_array = np.array(meanK)
 # later edit to .reshape(trials, pressures)
-meanK_values = meanK_array.reshape(2, 5)
+meanK_values = meanK_array.reshape(trials, 5)
 print(meanK_values)
 avg_meanK_values = np.mean(meanK_values, axis=0)
 
