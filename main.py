@@ -120,16 +120,20 @@ avg_meanK_values = np.mean(meanK_values, axis=0)
 xaxis = [10, 15, 20, 25, 35]
 plt.plot(xaxis, avg_meanK_values, 'ro', label= 'Average MeanK')
 fitted_graph = np.polyfit(xaxis, avg_meanK_values, 2)
-plt.plot(xaxis, np.polyval(fitted_graph, xaxis), color = 'blue', label = 'polyfit') # mark w x
-plt.errorbar(xaxis, avg_meanK_values,
-            yerr=standard_error)
+plt.plot(xaxis, np.polyval(fitted_graph, xaxis), color='blue', label='polyfit')
+plt.errorbar(xaxis, avg_meanK_values, yerr=standard_error, color="orange", label='Standard Error')
+plt.legend()
 # r2 value
 slope, intercept, r_value, p_value, std_err = stats.linregress(xaxis, avg_meanK_values)
 r_squared = r_value**2
 print(r_squared)
 # plotting
 plt.legend()
-plt.text(13, 0.25, r_squared, horizontalalignment = 'right')
+plt.text(13, 1, r_squared, horizontalalignment='right')
 plt.show()
+
+
+
+
 
 
