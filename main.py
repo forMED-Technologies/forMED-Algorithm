@@ -12,14 +12,13 @@ root = tk.Tk()
 root.withdraw()
 # import PIL
 import numpy as np
-import image
-import imagesize
+# import image
+# import imagesize
 from PIL import Image
-import matplotlib
+# import matplotlib
 from matplotlib import pyplot as plt
-import scipy
+# import scipy
 from scipy import stats
-import datastructs
 
 # folders = []
 files = []
@@ -33,20 +32,22 @@ tests = int(input("Test Runs Being Analyzed: "))
 input_string = (input("Enter pressure values separated by space: "))
 pressures = input_string.split(" ")
 for i in range(len(pressures)):
-    pressures[i]=int(pressures[i])
+   pressures[i]=int(pressures[i])
 print(pressures)
 # while the number of values in pressure array does not match tests incorrect
 while len(pressures) != tests:
-    print("Incorrect Array Length. Please try again.")
-    # we run this again so we dont have to break or re-run the code
-    input_string = (input("Enter pressure values separated by space: "))
-    pressures = input_string.split(" ")
-    # make string variables into int
-    for i in range(len(pressures)):
-        pressures[i] = int(pressures[i])
+   print("Incorrect Array Length. Please try again.")
+   # we run this again so we dont have to break or re-run the code
+   input_string = (input("Enter pressure values separated by space: "))
+   pressures = input_string.split(" ")
+   # make string variables into int
+   for i in range(len(pressures)):
+       pressures[i] = int(pressures[i])
 # temporary print to ensure program is working
 print("Length of Pressures match number of Tests")
 '''
+
+
 trials = int(input("How many trials?: "))
 filter = int(input("Remove Noise? 1- yes 0-no: "))
 # control no light file
@@ -108,6 +109,9 @@ meanK_array = np.array(meanK)
 # later edit to .reshape(trials, pressures)
 meanK_values = meanK_array.reshape(trials, 5)
 print(meanK_values)
+# standard error
+standard_error = np.std(meanK_values, axis=0) / np.sqrt(np.size(meanK_values, axis=0))
+# avg meanK
 avg_meanK_values = np.mean(meanK_values, axis=0)
 
 
@@ -117,6 +121,8 @@ xaxis = [10, 15, 20, 25, 35]
 plt.plot(xaxis, avg_meanK_values, 'ro', label= 'Average MeanK')
 fitted_graph = np.polyfit(xaxis, avg_meanK_values, 2)
 plt.plot(xaxis, np.polyval(fitted_graph, xaxis), color = 'blue', label = 'polyfit') # mark w x
+plt.errorbar(xaxis, avg_meanK_values,
+            yerr=standard_error)
 # r2 value
 slope, intercept, r_value, p_value, std_err = stats.linregress(xaxis, avg_meanK_values)
 r_squared = r_value**2
@@ -125,3 +131,5 @@ print(r_squared)
 plt.legend()
 plt.text(13, 0.25, r_squared, horizontalalignment = 'right')
 plt.show()
+
+
