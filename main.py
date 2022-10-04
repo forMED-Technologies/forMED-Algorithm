@@ -130,7 +130,13 @@ print(r_squared)
 # plotting
 plt.legend()
 plt.text(13, 1, r_squared, horizontalalignment='right')
+plt.title('Speckle Contrast vs Pressure')
+plt.ylabel('Mean Speckle Contrast (K)')
+plt.xlabel('Pressure mmHg')
 plt.show()
+
+
+
 
 
 
